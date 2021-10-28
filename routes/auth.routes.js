@@ -44,4 +44,48 @@ router.post('/signup', (req, res, next) => {
   // create the user
 });
 
+router.post('/login', (req, res, next) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({
+      errorMessage: `Hey! Did you forget something? cough cough ${
+        username ? 'password' : password ? 'username and password' : 'username'
+      }`,
+    });
+  }
+
+  User.findOne({ username })
+    .then((user) => {
+      if (!user) {
+        return res.json({
+          errorMessage: "Oy! Mate! You don't have an account!",
+        });
+      }
+
+      bcrypt.compare(password, user.password).then((isSamePassword) => {
+        if (!isSamePassword) {
+          return res.json({ errorMessage: 'Wrong password, mate.' });
+        }
+
+        req.session.user = user;
+        return res.json(user);
+      });
+    })
+    .catch((error) => {
+      next(error);
+    });
+});
+
+router.post('/logout', (req, res, next) => {
+  req.session.destroy((error) => {
+    if (error) {
+      return res.status(500).json({
+        errorMessage: `Something went wrong with the logout: ${error.message}`,
+      });
+    }
+    res.json({ successMessage: 'Logged out!' });
+  });
+});
+
 module.exports = router;
