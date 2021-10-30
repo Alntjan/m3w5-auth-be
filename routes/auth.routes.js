@@ -88,4 +88,11 @@ router.post('/logout', (req, res, next) => {
   });
 });
 
+router.get('/loggedin', (req, res, next) => {
+  if (req.session.user) {
+    return res.json({ user: req.session.user });
+  }
+  res.status(403).json({ errorMessage: "You're not authenticated." });
+});
+
 module.exports = router;

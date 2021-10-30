@@ -45,11 +45,12 @@ module.exports = (app) => {
       saveUninitialized: false,
       store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URI,
+        ttl: 1000 * 60 * 60 * 24 * 365,
       }),
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365,
-        sameSite: 'none',
-        secure: process.env.NODE_ENV === 'production',
+        // sameSite: 'none',
+        // secure: process.env.NODE_ENV === 'production',
       },
     })
   );
@@ -57,5 +58,5 @@ module.exports = (app) => {
   app.use((req, res, next) => {
     req.user = req.session.user || null;
     next();
-  })
+  });
 };
