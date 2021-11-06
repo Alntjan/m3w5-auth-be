@@ -44,7 +44,7 @@ module.exports = (app) => {
       resave: false,
       saveUninitialized: false,
       store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI,
+        mongoUrl: process.env.MONGODB_URI || "mongodb://localhost/m3w5-auth-be",
         ttl: 1000 * 60 * 60 * 24 * 365,
       }),
       cookie: {
