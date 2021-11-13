@@ -50,8 +50,8 @@ module.exports = (app) => {
       }),
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365,
-        sameSite: false,
         httpOnly: true,
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : false,
         secure: process.env.NODE_ENV === 'production',
       },
     })
