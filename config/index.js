@@ -26,7 +26,7 @@ module.exports = (app) => {
   app.use(
     cors({
       credentials: true,
-      origin: process.env.ORIGIN || 'http://localhost:3000',
+      origin: [process.env.ORIGIN || 'http://localhost:3000'],
     })
   );
 
@@ -54,6 +54,15 @@ module.exports = (app) => {
       },
     })
   );
+
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', process.env.ORIGIN); // update to match the domain you will make the request from
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
+    );
+    next();
+  });
 
   app.use((req, res, next) => {
     req.user = req.session.user || null;
