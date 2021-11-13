@@ -43,6 +43,7 @@ module.exports = (app) => {
       secret: process.env.SESSION_SECRET || 'another super secret key',
       resave: false,
       saveUninitialized: false,
+      proxy: true,
       store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost/m3w5-auth-be',
         ttl: 1000 * 60 * 60 * 24 * 365,
