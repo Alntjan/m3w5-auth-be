@@ -49,25 +49,12 @@ module.exports = (app) => {
       }),
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365,
-        sameSite: 'none',
+        sameSite: false,
+        httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
       },
     })
   );
-
-  app.use((req, res, next) => {
-    res.set('Access-Control-Allow-Origin', process.env.ORIGIN);
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept'
-    );
-    // res.header('Access-Control-Allow-Origin', process.env.ORIGIN); // update to match the domain you will make the request from
-    // res.header(
-    //   'Access-Control-Allow-Headers',
-    //   'Origin, X-Requested-With, Content-Type, Accept'
-    // );
-    next();
-  });
 
   app.use((req, res, next) => {
     req.user = req.session.user || null;
